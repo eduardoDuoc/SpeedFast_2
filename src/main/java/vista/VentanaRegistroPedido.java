@@ -1,6 +1,7 @@
 package vista;
 
 import javax.swing.*;
+
 import controlador.ControladorPedidos;
 import modelo.Pedido;
 
@@ -60,19 +61,42 @@ public class VentanaRegistroPedido extends JFrame {
                 return;
             }
 
+            if (idPedido <= 0) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "El ID del pedido debe ser mayor que cero."
+                );
+
+                return;
+            }
+
+            for (Pedido pedidoExistente : controlador.obtenerPedidos()) {
+
+                if (pedidoExistente.getIdPedido() == idPedido) {
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Ya existe un pedido con ese ID."
+                    );
+
+                    return;
+                }
+            }
+
             Pedido pedido = new Pedido(
                     idPedido,
                     direccion,
                     tipo
             );
 
+            controlador.agregarPedido(pedido);
+
             JOptionPane.showMessageDialog(
                     this,
                     "Pedido registrado correctamente."
             );
 
-
-            controlador.agregarPedido(pedido);
 
         });
 

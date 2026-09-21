@@ -11,6 +11,7 @@ public class Pedido {
     public Pedido(int idPedido, String direccionEntrega) {
         this.idPedido = idPedido;
         this.direccionEntrega = direccionEntrega;
+        this.estado = EstadoPedido.PENDIENTE;
     }
 
     public Pedido(int idPedido, String direccionEntrega, String tipoPedido) {

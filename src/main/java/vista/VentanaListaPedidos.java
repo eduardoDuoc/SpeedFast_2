@@ -42,6 +42,12 @@ public class VentanaListaPedidos extends JFrame {
 
         });
 
+        button2Limpiar.addActionListener(e -> {
+
+            modeloTabla.setRowCount(0);
+
+        });
+
         setVisible(true);
     }
 
