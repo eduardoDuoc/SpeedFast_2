@@ -25,13 +25,16 @@ public class Pedido {
     public int getIdPedido() {
         return idPedido;
     }
+    public void setIdPedido(int idPedido) {
+        this.idPedido = idPedido;
+    }
 
     public void setEstado(EstadoPedido nuevoEstado) {
         this.estado = nuevoEstado;
     }
 
-    public EstadoPedido getEstadoPedido() {
-        return estado;
+    public String getEstadoPedido() {
+        return estado.name();
     }
 
     public String getDireccionEntrega() {

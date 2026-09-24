@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="aef80" binding="panelRegistro" layout-manager="GridLayoutManager" row-count="3" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="10" vgap="15">
+      <grid id="aef80" binding="panelRegistro" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="10" vgap="15">
         <margin top="15" left="15" bottom="15" right="15"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="true"/>
@@ -16,17 +16,9 @@
         <properties/>
         <border type="none" title="Registro de pedidos"/>
         <children>
-          <component id="5ca23" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="ID Pedido"/>
-            </properties>
-          </component>
           <component id="3c64" class="javax.swing.JLabel">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Direccion"/>
@@ -34,23 +26,15 @@
           </component>
           <component id="7ada8" class="javax.swing.JLabel">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Tipo"/>
             </properties>
           </component>
-          <component id="47c33" class="javax.swing.JTextField" binding="txtIdPedido">
-            <constraints>
-              <grid row="0" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="250" height="30"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
           <component id="d349a" class="javax.swing.JTextField" binding="txtDireccion">
             <constraints>
-              <grid row="1" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="0" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="250" height="30"/>
               </grid>
             </constraints>
@@ -58,7 +42,7 @@
           </component>
           <component id="64e7f" class="javax.swing.JComboBox" binding="comboBox1Tipo">
             <constraints>
-              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="250" height="30"/>
               </grid>
             </constraints>

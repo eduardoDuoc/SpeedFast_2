@@ -1,7 +1,9 @@
 package controlador;
 
 import modelo.*;
+import dao.PedidoDAO;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
@@ -20,25 +22,53 @@ public class ControladorPedidos {
 
     private boolean entregasEnCurso = false;
 
+    private PedidoDAO pedidoDAO;
+
     // Constructor
     public ControladorPedidos() {
 
         listaPedidos = new ArrayList<>();
         zonaDeCarga = new ZonaDeCarga();
+        pedidoDAO = new PedidoDAO();
 
     }
 
     // Método para agregar pedidos
-    public void agregarPedido(Pedido pedido) {
+    public boolean agregarPedido(Pedido pedido) {
 
-        listaPedidos.add(pedido);
+        try {
 
+            boolean guardado = pedidoDAO.guardar(pedido);
+
+            if (guardado) {
+
+                listaPedidos.add(pedido);
+
+                return true;
+            }
+
+            return false;
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                    "Error al registrar pedido: " + e.getMessage()
+            );
+
+            return false;
+        }
     }
 
     // Método para obtener los pedidos
     public List<Pedido> obtenerPedidos() {
 
         return listaPedidos;
+
+    }
+
+    public List<Pedido> consultarPedidos() throws SQLException {
+
+        return pedidoDAO.listarTodos();
 
     }
 
@@ -52,8 +82,6 @@ public class ControladorPedidos {
             if (!pedidosEnviados.contains(pedido.getIdPedido())) {
 
                 zonaDeCarga.agregarPedido(pedido);
-
-                pedido.setEstado(EstadoPedido.EN_ZONA_DE_CARGA);
 
                 pedidosEnviados.add(pedido.getIdPedido());
 

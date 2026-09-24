@@ -8,7 +8,6 @@ import modelo.Pedido;
 public class VentanaRegistroPedido extends JFrame {
     private JPanel RegistroPedidos;
     private JPanel panelRegistro;
-    private JTextField txtIdPedido;
     private JTextField txtDireccion;
     private JComboBox comboBox1Tipo;
     private JButton guardarButton;
@@ -31,71 +30,44 @@ public class VentanaRegistroPedido extends JFrame {
 
         guardarButton.addActionListener(e -> {
 
-            String idTexto = txtIdPedido.getText().trim();
             String direccion = txtDireccion.getText().trim();
             String tipo = comboBox1Tipo.getSelectedItem().toString();
 
-            if (idTexto.isEmpty() || direccion.isEmpty()) {
+            if (direccion.isEmpty()) {
 
                 JOptionPane.showMessageDialog(
                         this,
-                        "Debe completar todos los campos."
+                        "Debe ingresar una dirección de entrega."
                 );
 
                 return;
-            }
-
-            int idPedido;
-
-            try {
-
-                idPedido = Integer.parseInt(idTexto);
-
-            } catch (NumberFormatException ex) {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "El ID debe ser un número válido."
-                );
-
-                return;
-            }
-
-            if (idPedido <= 0) {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "El ID del pedido debe ser mayor que cero."
-                );
-
-                return;
-            }
-
-            for (Pedido pedidoExistente : controlador.obtenerPedidos()) {
-
-                if (pedidoExistente.getIdPedido() == idPedido) {
-
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "Ya existe un pedido con ese ID."
-                    );
-
-                    return;
-                }
             }
 
             Pedido pedido = new Pedido(
-                    idPedido,
+                    0,
                     direccion,
                     tipo
             );
 
-            controlador.agregarPedido(pedido);
+            boolean guardado = controlador.agregarPedido(pedido);
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Pedido registrado correctamente."
-            );
+            if (guardado) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Pedido registrado correctamente. ID: "
+                                + pedido.getIdPedido()
+                );
+
+            } else {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Error al registrar el pedido."
+                );
+
+            }
+
 
 
         });

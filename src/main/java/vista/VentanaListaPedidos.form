@@ -6,7 +6,7 @@
       <xy x="20" y="20" width="500" height="400"/>
     </constraints>
     <properties/>
-    <border type="none" title="Lista de Productos"/>
+    <border type="none" title="Lista de Pedidos"/>
     <children>
       <scrollpane id="aa1e0">
         <constraints>

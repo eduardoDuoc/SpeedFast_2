@@ -5,10 +5,29 @@ public class Repartidor implements Runnable {
 
     private String nombre;
     private ZonaDeCarga zonaDeCarga;
+    private int idRepartidor;
 
     public Repartidor(String nombre, ZonaDeCarga zonaDeCarga) {
         this.nombre = nombre;
         this.zonaDeCarga = zonaDeCarga;
+    }
+
+    public Repartidor(int idRepartidor, String nombre) {
+
+        this.idRepartidor = idRepartidor;
+        this.nombre = nombre;
+
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getIdRepartidor() {
+        return idRepartidor;
+    }
+    public void setIdRepartidor(int idRepartidor) {
+        this.idRepartidor = idRepartidor;
     }
 
     @Override
