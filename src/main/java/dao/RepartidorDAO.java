@@ -27,7 +27,7 @@ public class RepartidorDAO {
 
                 int id = rs.getInt("idRepartidor");
 
-                String nombre = rs.getString("nombre");
+                String nombre = rs.getString("nombreRepartidor");
 
                 Repartidor repartidor = new Repartidor(id, nombre);
 
@@ -40,7 +40,7 @@ public class RepartidorDAO {
 
     public boolean guardar(Repartidor repartidor) {
 
-        String sql = "INSERT INTO repartidor (nombre) VALUES (?)";
+        String sql = "INSERT INTO repartidor (nombreRepartidor) VALUES (?)";
 
         try (Connection conexion = ConexionBD.conectar();
              PreparedStatement ps = conexion.prepareStatement(
@@ -72,6 +72,7 @@ public class RepartidorDAO {
             System.out.println(
                     "Error al guardar repartidor: " + e.getMessage()
             );
+            e.printStackTrace();
 
             return false;
         }

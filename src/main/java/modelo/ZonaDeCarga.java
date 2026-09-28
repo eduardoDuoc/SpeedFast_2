@@ -23,4 +23,8 @@ public class ZonaDeCarga {
         return pedidos.poll();
     }
 
+    public boolean tienePedidos() {
+        return !pedidos.isEmpty();
+    }
+
 }

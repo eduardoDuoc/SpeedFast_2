@@ -11,6 +11,7 @@ public class VentanaPrincipal extends JFrame {
     private JButton asignarRepartidorButton;
     private JPanel panelPrincipal;
     private JButton iniciarEntregaButton1;
+    private JButton registrarRepartidorButton;
 
     private ControladorPedidos controlador;
 
@@ -20,8 +21,9 @@ public class VentanaPrincipal extends JFrame {
 
         setTitle("SpeedFast - Menú Principal");
         setContentPane(panelPrincipal);
-        setSize(750, 230);
+        setSize(950, 250);
         setLocationRelativeTo(null);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         registrarPedidoButton.addActionListener(e -> {
@@ -37,6 +39,16 @@ public class VentanaPrincipal extends JFrame {
         asignarRepartidorButton.addActionListener(e -> {
 
             int cantidad = controlador.asignarPedidos();
+
+            if (cantidad == -1) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Error al recuperar los pedidos desde MySQL.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
 
             if (cantidad > 0) {
 
@@ -56,25 +68,38 @@ public class VentanaPrincipal extends JFrame {
 
         });
 
+
         iniciarEntregaButton1.addActionListener(e -> {
+
+            if (!controlador.tienePedidosAsignados()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No hay pedidos asignados. "
+                                + "Debes asignar los pedidos antes "
+                                + "de iniciar la entrega."
+                );
+                return;
+            }
 
             boolean iniciado = controlador.iniciarEntregas();
 
             if (iniciado) {
-
                 JOptionPane.showMessageDialog(
                         this,
                         "Se ha iniciado la simulación de entregas."
                 );
-
             } else {
-
                 JOptionPane.showMessageDialog(
                         this,
                         "Ya existe una simulación de entregas en curso."
                 );
-
             }
+        });
+
+
+        registrarRepartidorButton.addActionListener(e -> {
+
+            new VentanaRegistroRepartidor();
 
         });
 

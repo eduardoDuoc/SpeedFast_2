@@ -2,6 +2,7 @@ package controlador;
 
 import modelo.*;
 import dao.PedidoDAO;
+import dao.RepartidorDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,31 +73,49 @@ public class ControladorPedidos {
 
     }
 
-
     public int asignarPedidos() {
 
         int cantidad = 0;
 
-        for (Pedido pedido : listaPedidos) {
+        try {
+            // Recuperar los pedidos de MySQL
+            List<Pedido> pedidos = pedidoDAO.listarTodos();
 
-            if (!pedidosEnviados.contains(pedido.getIdPedido())) {
+            for (Pedido pedido : pedidos) {
 
-                zonaDeCarga.agregarPedido(pedido);
+                // Asignar únicamente pedidos pendientes
+                if (EstadoPedido.PENDIENTE.name()
+                        .equals(pedido.getEstadoPedido())
+                        && !pedidosEnviados.contains(
+                        pedido.getIdPedido())) {
 
-                pedidosEnviados.add(pedido.getIdPedido());
+                    zonaDeCarga.agregarPedido(pedido);
 
-                cantidad++;
+                    pedidosEnviados.add(
+                            pedido.getIdPedido());
 
+                    cantidad++;
+                }
             }
 
+        } catch (SQLException e) {
+            System.err.println(
+                    "Error al consultar pedidos: "
+                            + e.getMessage());
+
+            return -1;
         }
 
         return cantidad;
     }
 
+
     public synchronized boolean iniciarEntregas() {
 
         if (entregasEnCurso) {
+            return false;
+        }
+        if (!zonaDeCarga.tienePedidos()) {
             return false;
         }
 
@@ -108,18 +127,27 @@ public class ControladorPedidos {
 
             try {
 
-                Repartidor repartidor1 =
-                        new Repartidor("Eduardo", zonaDeCarga);
+                RepartidorDAO dao = new RepartidorDAO();
 
-                Repartidor repartidor2 =
-                        new Repartidor("Catalina", zonaDeCarga);
+                List<Repartidor> repartidores = dao.listarTodos();
 
-                Repartidor repartidor3 =
-                        new Repartidor("Mauri", zonaDeCarga);
+                for (Repartidor repartidor : repartidores) {
 
-                executor.execute(repartidor1);
-                executor.execute(repartidor2);
-                executor.execute(repartidor3);
+                    Repartidor trabajador = new Repartidor(
+                            repartidor.getIdRepartidor(),
+                            repartidor.getNombre(),
+                            zonaDeCarga
+                    );
+
+                    executor.execute(trabajador);
+                }
+
+            } catch (SQLException e) {
+
+                System.out.println(
+                        "Error al consultar repartidores: "
+                                + e.getMessage()
+                );
 
             } finally {
 
@@ -151,6 +179,10 @@ public class ControladorPedidos {
         simulacion.start();
 
         return true;
+    }
+
+    public boolean tienePedidosAsignados() {
+        return zonaDeCarga.tienePedidos();
     }
 
 }

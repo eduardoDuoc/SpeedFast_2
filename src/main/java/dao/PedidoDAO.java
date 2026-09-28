@@ -79,4 +79,24 @@ public class PedidoDAO {
 
         return listaPedidos;
     }
+
+    public boolean actualizarEstado(int idPedido, EstadoPedido estado) {
+
+        String sql = "UPDATE pedido SET estado = ? WHERE idpedido = ?";
+
+        try (Connection conexion = ConexionBD.conectar();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+            ps.setString(1, estado.name());
+            ps.setInt(2, idPedido);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println(
+                    "Error al actualizar estado: " + e.getMessage());
+            return false;
+        }
+    }
+
 }
