@@ -1,8 +1,6 @@
 package controlador;
 
 import modelo.*;
-import dao.PedidoDAO;
-import dao.RepartidorDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

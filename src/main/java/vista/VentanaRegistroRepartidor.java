@@ -1,6 +1,5 @@
 package vista;
 
-import dao.RepartidorDAO;
 import modelo.Repartidor;
 import javax.swing.*;
 
