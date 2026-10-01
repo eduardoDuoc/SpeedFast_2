@@ -1,5 +1,10 @@
 package modelo;
 
+import dao.EntregaDAO;
+import dao.PedidoDAO;
+import dao.impl.PedidoDAOImpl;
+import dao.impl.EntregaDAOImpl;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -31,6 +36,7 @@ public class Repartidor implements Runnable {
     public int getIdRepartidor() {
         return idRepartidor;
     }
+
     public void setIdRepartidor(int idRepartidor) {
         this.idRepartidor = idRepartidor;
     }
@@ -39,8 +45,8 @@ public class Repartidor implements Runnable {
     @Override
     public void run() {
 
-        PedidoDAO pedidoDAO = new PedidoDAO();
-        EntregaDAO entregaDAO = new EntregaDAO();
+        PedidoDAO pedidoDAO = new PedidoDAOImpl();
+        EntregaDAO entregaDAO = new EntregaDAOImpl();
 
         while (true) {
 
@@ -56,16 +62,8 @@ public class Repartidor implements Runnable {
             );
 
             // Actualizar el estado en MySQL
-            if (!pedidoDAO.actualizarEstado(
-                    pedido.getIdPedido(), EstadoPedido.EN_REPARTO)) {
-
-                System.err.println(
-                        "No se pudo iniciar el pedido #"
-                                + pedido.getIdPedido());
-                continue;
-            }
-
             pedido.setEstado(EstadoPedido.EN_REPARTO);
+            pedidoDAO.update(pedido);
 
             System.out.println(
                     "[Repartidor - " + nombre + "] Estado: "
@@ -86,16 +84,8 @@ public class Repartidor implements Runnable {
             }
 
             // Guardar el estado ENTREGADO en MySQL
-            if (!pedidoDAO.actualizarEstado(
-                    pedido.getIdPedido(), EstadoPedido.ENTREGADO)) {
-
-                System.err.println(
-                        "No se pudo finalizar el pedido #"
-                                + pedido.getIdPedido());
-                continue;
-            }
-
             pedido.setEstado(EstadoPedido.ENTREGADO);
+            pedidoDAO.update(pedido);
 
             // Crear el registro de entrega
             Entrega entrega = new Entrega(
@@ -106,13 +96,7 @@ public class Repartidor implements Runnable {
             );
 
             // Registrar la entrega en MySQL
-            if (!entregaDAO.guardar(entrega)) {
-
-                System.err.println(
-                        "No se pudo registrar la entrega del pedido #"
-                                + pedido.getIdPedido());
-                continue;
-            }
+            entregaDAO.create(entrega);
 
             System.out.println(
                     "[Repartidor - " + nombre + "] Estado: "

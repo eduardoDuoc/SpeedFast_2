@@ -1,5 +1,7 @@
 package vista;
 
+import dao.RepartidorDAO;
+import dao.impl.RepartidorDAOImpl;
 import modelo.Repartidor;
 import javax.swing.*;
 
@@ -33,11 +35,11 @@ public class VentanaRegistroRepartidor extends JFrame {
             Repartidor repartidor =
                     new Repartidor(0, nombre);
 
-            RepartidorDAO dao = new RepartidorDAO();
+            RepartidorDAO dao = new RepartidorDAOImpl();
 
-            boolean guardado = dao.guardar(repartidor);
+            dao.create(repartidor);
 
-            if (guardado) {
+            if (repartidor.getIdRepartidor() > 0){
 
                 JOptionPane.showMessageDialog(
                         this,

@@ -4,8 +4,6 @@ import javax.swing.*;
 import controlador.ControladorPedidos;
 import modelo.Pedido;
 import javax.swing.table.DefaultTableModel;
-import java.sql.SQLException;
-
 
 public class VentanaListaPedidos extends JFrame {
     private JPanel panel1;
@@ -56,27 +54,16 @@ public class VentanaListaPedidos extends JFrame {
 
         modeloTabla.setRowCount(0);
 
-        try {
+        for (Pedido pedido : controlador.consultarPedidos()) {
 
-            for (Pedido pedido : controlador.consultarPedidos()) {
+            modeloTabla.addRow(new Object[]{
 
-                modeloTabla.addRow(new Object[]{
+                    pedido.getIdPedido(),
+                    pedido.getDireccionEntrega(),
+                    pedido.getTipoPedido(),
+                    pedido.getEstadoPedido()
 
-                        pedido.getIdPedido(),
-                        pedido.getDireccionEntrega(),
-                        pedido.getTipoPedido(),
-                        pedido.getEstadoPedido()
-
-                });
-
-            }
-
-        } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Error al consultar pedidos: " + e.getMessage()
-            );
+            });
 
         }
 

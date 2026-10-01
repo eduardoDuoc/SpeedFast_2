@@ -1,7 +1,11 @@
 package controlador;
 
+import dao.PedidoDAO;
 import modelo.*;
-
+import dao.PedidoDAO;
+import dao.impl.PedidoDAOImpl;
+import dao.RepartidorDAO;
+import dao.impl.RepartidorDAOImpl;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,34 +32,23 @@ public class ControladorPedidos {
 
         listaPedidos = new ArrayList<>();
         zonaDeCarga = new ZonaDeCarga();
-        pedidoDAO = new PedidoDAO();
+        pedidoDAO = new PedidoDAOImpl();
 
     }
 
     // Método para agregar pedidos
     public boolean agregarPedido(Pedido pedido) {
 
-        try {
+        pedidoDAO.create(pedido);
 
-            boolean guardado = pedidoDAO.guardar(pedido);
+        if (pedido.getIdPedido() > 0) {
 
-            if (guardado) {
+            listaPedidos.add(pedido);
 
-                listaPedidos.add(pedido);
-
-                return true;
-            }
-
-            return false;
-
-        } catch (SQLException e) {
-
-            System.out.println(
-                    "Error al registrar pedido: " + e.getMessage()
-            );
-
-            return false;
+            return true;
         }
+
+        return false;
     }
 
     // Método para obtener los pedidos
@@ -65,9 +58,9 @@ public class ControladorPedidos {
 
     }
 
-    public List<Pedido> consultarPedidos() throws SQLException {
+    public List<Pedido> consultarPedidos() {
 
-        return pedidoDAO.listarTodos();
+        return pedidoDAO.readAll();
 
     }
 
@@ -75,33 +68,23 @@ public class ControladorPedidos {
 
         int cantidad = 0;
 
-        try {
-            // Recuperar los pedidos de MySQL
-            List<Pedido> pedidos = pedidoDAO.listarTodos();
+        List<Pedido> pedidos = pedidoDAO.readAll();
 
-            for (Pedido pedido : pedidos) {
+        for (Pedido pedido : pedidos) {
 
-                // Asignar únicamente pedidos pendientes
-                if (EstadoPedido.PENDIENTE.name()
-                        .equals(pedido.getEstadoPedido())
-                        && !pedidosEnviados.contains(
-                        pedido.getIdPedido())) {
+            if (EstadoPedido.PENDIENTE.name()
+                    .equals(pedido.getEstadoPedido())
+                    && !pedidosEnviados.contains(
+                    pedido.getIdPedido())) {
 
-                    zonaDeCarga.agregarPedido(pedido);
+                zonaDeCarga.agregarPedido(pedido);
 
-                    pedidosEnviados.add(
-                            pedido.getIdPedido());
+                pedidosEnviados.add(
+                        pedido.getIdPedido()
+                );
 
-                    cantidad++;
-                }
+                cantidad++;
             }
-
-        } catch (SQLException e) {
-            System.err.println(
-                    "Error al consultar pedidos: "
-                            + e.getMessage());
-
-            return -1;
         }
 
         return cantidad;
@@ -125,9 +108,9 @@ public class ControladorPedidos {
 
             try {
 
-                RepartidorDAO dao = new RepartidorDAO();
+                RepartidorDAO dao = new RepartidorDAOImpl();
 
-                List<Repartidor> repartidores = dao.listarTodos();
+                List<Repartidor> repartidores = dao.readAll();
 
                 for (Repartidor repartidor : repartidores) {
 
@@ -139,13 +122,6 @@ public class ControladorPedidos {
 
                     executor.execute(trabajador);
                 }
-
-            } catch (SQLException e) {
-
-                System.out.println(
-                        "Error al consultar repartidores: "
-                                + e.getMessage()
-                );
 
             } finally {
 
