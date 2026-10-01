@@ -64,6 +64,15 @@ public class ControladorPedidos {
 
     }
 
+    public void actualizarPedido(Pedido pedido) {
+
+        pedidoDAO.update(pedido);
+    }
+
+    public boolean eliminarPedido(int idPedido) {
+        return pedidoDAO.delete(idPedido);
+    }
+
     public int asignarPedidos() {
 
         int cantidad = 0;

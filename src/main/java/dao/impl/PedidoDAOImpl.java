@@ -122,7 +122,7 @@ public class PedidoDAOImpl implements PedidoDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
 
         String sql =
                 "DELETE FROM pedido WHERE idpedido = ?";
@@ -133,9 +133,9 @@ public class PedidoDAOImpl implements PedidoDAO {
 
             ps.setInt(1, id);
 
-            ps.executeUpdate();
+            int filas = ps.executeUpdate();
 
-            System.out.println("Pedido eliminado correctamente.");
+            return filas > 0;
 
         } catch (SQLException e) {
 
@@ -143,6 +143,8 @@ public class PedidoDAOImpl implements PedidoDAO {
                     "Error al eliminar pedido: "
                             + e.getMessage()
             );
+
+            return false;
         }
     }
 }
