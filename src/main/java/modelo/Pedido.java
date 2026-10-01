@@ -50,4 +50,9 @@ public class Pedido {
         System.out.println("\nID: " + idPedido);
         System.out.println("Direccion: " + direccionEntrega);
     }
+
+    @Override
+    public String toString() {
+        return idPedido + " - " + direccionEntrega;
+    }
 }

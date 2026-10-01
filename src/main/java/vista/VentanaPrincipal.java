@@ -1,7 +1,12 @@
 package vista;
 
 import javax.swing.*;
-
+import modelo.Pedido;
+import modelo.Repartidor;
+import dao.PedidoDAO;
+import dao.RepartidorDAO;
+import dao.impl.PedidoDAOImpl;
+import dao.impl.RepartidorDAOImpl;
 import controlador.ControladorPedidos;
 
 public class VentanaPrincipal extends JFrame {
@@ -12,16 +17,20 @@ public class VentanaPrincipal extends JFrame {
     private JPanel panelPrincipal;
     private JButton iniciarEntregaButton1;
     private JButton registrarRepartidorButton;
+    private JComboBox comboPedido;
+    private JComboBox comboRepartidor;
+    private JButton entregasButton;
 
     private ControladorPedidos controlador;
 
     public VentanaPrincipal(ControladorPedidos controlador) {
 
+
         this.controlador = controlador;
 
         setTitle("SpeedFast - Menú Principal");
         setContentPane(panelPrincipal);
-        setSize(950, 250);
+        setSize(1200, 250);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -109,9 +118,42 @@ public class VentanaPrincipal extends JFrame {
 
         });
 
+        entregasButton.addActionListener(e -> {
 
+            new VentanaEntregas();
+
+        });
+
+        cargarPedidosCombo();
+        cargarRepartidoresCombo();
 
         setVisible(true);
 
+    }
+
+    private void cargarPedidosCombo() {
+
+        comboPedido.removeAllItems();
+
+        PedidoDAO pedidoDAO = new PedidoDAOImpl();
+
+        for (Pedido pedido : pedidoDAO.readAll()) {
+
+            comboPedido.addItem(pedido);
+        }
+    }
+
+    private void cargarRepartidoresCombo() {
+
+        comboRepartidor.removeAllItems();
+
+        RepartidorDAO repartidorDAO =
+                new RepartidorDAOImpl();
+
+        for (Repartidor repartidor :
+                repartidorDAO.readAll()) {
+
+            comboRepartidor.addItem(repartidor);
+        }
     }
 }

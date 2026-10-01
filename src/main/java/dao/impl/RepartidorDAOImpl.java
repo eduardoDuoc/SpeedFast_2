@@ -127,11 +127,10 @@ public class RepartidorDAOImpl implements RepartidorDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
 
         String sql =
-                "DELETE FROM repartidor "
-                        + "WHERE idRepartidor = ?";
+                "DELETE FROM repartidor WHERE idRepartidor = ?";
 
         try (Connection conexion = ConexionBD.conectar();
              PreparedStatement ps =
@@ -139,11 +138,9 @@ public class RepartidorDAOImpl implements RepartidorDAO {
 
             ps.setInt(1, id);
 
-            ps.executeUpdate();
+            int filas = ps.executeUpdate();
 
-            System.out.println(
-                    "Repartidor eliminado correctamente."
-            );
+            return filas > 0;
 
         } catch (SQLException e) {
 
@@ -151,6 +148,8 @@ public class RepartidorDAOImpl implements RepartidorDAO {
                     "Error al eliminar repartidor: "
                             + e.getMessage()
             );
+
+            return false;
         }
     }
 }
