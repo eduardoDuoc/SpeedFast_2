@@ -10,6 +10,7 @@ public class ConexionBD {
     private static final String USER = "root";
     private static final String PASSWORD = "casa12345";
 
+
     public static Connection conectar() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }

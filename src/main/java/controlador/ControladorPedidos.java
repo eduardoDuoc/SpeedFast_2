@@ -2,11 +2,9 @@ package controlador;
 
 import dao.PedidoDAO;
 import modelo.*;
-import dao.PedidoDAO;
 import dao.impl.PedidoDAOImpl;
 import dao.RepartidorDAO;
 import dao.impl.RepartidorDAOImpl;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
